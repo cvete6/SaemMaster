@@ -1,0 +1,95 @@
+﻿@model SaemNaKniga.Models.AuthorAddBook
+@using SaemNaKniga.Models
+
+@{
+    ViewBag.Title = "AddBook";
+}
+<h2>AddBook</h2>
+@{
+    List<SelectListItem> bookList = new List<SelectListItem>();
+    List<SelectListItem> publushHouseList = new List<SelectListItem>();
+    List<SelectListItem> authorList = new List<SelectListItem>();
+
+    foreach (Book book in Model.books)
+    {
+        bookList.Add(new SelectListItem() { Text = book.Name, Value = book.Id.ToString() });
+    }
+
+    foreach (PublishHouse publishHouse in Model.publishHouses)
+    {
+        publushHouseList.Add(new SelectListItem() { Text = publishHouse.Name, Value = publishHouse.Id.ToString() });
+    }
+    foreach (Author author in Model.authors)
+    {
+        authorList.Add(new SelectListItem() { Text = author.Name, Value = author.Id.ToString() });
+    }
+}
+@using (Html.BeginForm())
+{
+    
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.PublishHouseId)</div>
+        <div>@Html.DropDownListFor(m => m.PublishHouseId, publushHouseList, new { @class = "form-control" })</div>
+        <div>@Html.ValidationMessageFor(m => m.PublishHouseId)</div>
+    </div>
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.AuthorId)</div>
+        <div>@Html.DropDownListFor(m => m.AuthorId, authorList, new { @class = "form-control" })</div>
+        <div>@Html.ValidationMessageFor(m => m.AuthorId)</div>
+    </div>
+
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.BookId)</div>
+        <div>@Html.DropDownListFor(m => m.BookId, bookList, new { @class = "form-control" })</div>
+        <div>@Html.ValidationMessageFor(m => m.BookId)</div>
+    </div>
+
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.Price)</div>
+        <div>@Html.TextBoxFor(m => m.Price, new { @class = "form-control", @type = "number" })</div>
+        <div>@Html.ValidationMessageFor(m => m.Price)</div>
+    </div>
+
+    <div class="form-group">
+        <div>@Html.LabelFor(m => m.InStock)</div>
+        <div>@Html.TextBoxFor(m => m.InStock, new { @class = "form-control", @type = "number" })</div>
+        <div>@Html.ValidationMessageFor(m => m.InStock)</div>
+    </div>
+
+    <input class="btn-card" type="submit" value="Додади книга" />
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+
+    .btn-card {
+        background-color: #1ABC9C;
+        color: #fff;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+        padding: .84rem 2.14rem;
+        font-size: 1.7rem;
+        -webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        -o-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        margin: 0;
+        border: 0;
+        -webkit-border-radius: .125rem;
+        border-radius: .125rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        white-space: normal;
+        word-wrap: break-word;
+        color: #fff;
+    }
+
+        .btn-card:hover {
+            background: orange;
+        }
+
+    a.btn-card {
+        text-decoration: none;
+        color: #fff;
+    }
+</style>

@@ -1,0 +1,230 @@
+﻿@model SaemNaKniga.Models.Authors_Models.AuthorBuyBook
+@using SaemNaKniga.Models
+@using SaemNaKniga.Models.Authors_Models
+
+@{
+	ViewBag.Title = "BuyBook";
+}
+
+<h2>Купи книга</h2>
+
+<section>
+	<div style="width:40%; float:left; display:inline-block;">
+		<div class="">
+			<div class="card-content">
+				<div class="card-img">
+					<img class="image" src="@Model.Author.ImgUrl" />
+				</div>
+				<div class="card-desc">
+					<h3 class="h3">@Model.Author.Name</h3>
+					<p class="p">@Model.Author.Biography</p>
+					<br />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-content" style="width:55%; margin-left:5%; float:left;">
+		<div style="width: 45%; float:left;">
+			<img style="width:100%;" src="@Model.bookExtended.ImgUrl" />
+			<h3 class="h3 book-name">@Model.bookExtended.Name</h3>
+		</div>
+		<div style="width: 45%; margin-left:5%; float:left">
+			<h3 class="h3 book-details">Година на издавање: @Model.bookExtended.Year</h3>
+			<h3 class="h3 book-details" id="available">Број на книги: @Model.bookExtended.Units</h3>
+			<h3 class="h3 book-details">Цена: @Model.bookExtended.Price Денари</h3>
+			<br />
+			@using (Html.BeginForm())
+			{
+				<div class="form-group">
+					<div>@Html.LabelFor(m => m.UnitsBuy, new { @class = "h3" })</div>
+					<div>@Html.TextBoxFor(m => m.UnitsBuy, new { @class = "form-control", type = "number", @id = "quantity" })</div>
+					<div>@Html.ValidationMessageFor(m => m.UnitsBuy)</div>
+				</div>
+
+				<h3 id="total">Вукпна цена: 0 денари</h3>
+
+				<div style="display:none" class="form-group">
+					<div>@Html.LabelFor(m => m.BookId)</div>
+					<div>@Html.TextBoxFor(m => m.BookId, new { @class = "form-control", type = "number" })</div>
+					<div>@Html.ValidationMessageFor(m => m.BookId)</div>
+				</div>
+
+				<div style="display:none" class="form-group">
+					<div>@Html.LabelFor(m => m.AuthorId)</div>
+					<div>@Html.TextBoxFor(m => m.AuthorId, new { @class = "form-control", type = "number" })</div>
+					<div>@Html.ValidationMessageFor(m => m.AuthorId)</div>
+				</div>
+
+				<input class="btn-card" type="submit" id="submit" value="Купи ја книгата" />
+			}
+		</div>
+		<div style="clear: both">
+			<p style="margin: 5px">@Model.bookExtended.Description</p>
+		</div>
+	</div>
+</section>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#quantity").on('input', function () {
+            var quantity = $("#quantity").val();
+            if (quantity < 0) {
+                $("#available").css("color", "red");
+                $("#available").html("Не внесувајте негативен број!");
+                $("#submit").prop('disabled', true);
+            }
+            else {
+                var price =@Model.bookExtended.Price;
+                var available =@Model.bookExtended.Units-quantity;
+                $("#total").html("Вкупна цена: " + quantity * price + " денари");
+                if (available >= 0) {
+                    $("#available").css("color", "black");
+                    $("#available").html("Број на книги: " + available);
+                    $("#submit").prop('disabled', false);
+                }
+                else {
+                    $("#available").css("color", "red");
+                    $("#available").html("Нема доволно книги за купување!");
+                    $("#submit").prop('disabled', true);
+                }
+            }
+        })
+    })
+</script>
+<style>
+
+	@@import url('https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Roboto+Condensed:400,400i,700,700i');
+
+	section {
+		padding: 30px 0;
+	}
+
+	.book-name {
+		color: #000000;
+		font-weight: 600;
+		font-size: 1.7em;
+		line-height: 1.3em;
+		margin-top: 3%;
+		margin-bottom: 5px;
+		padding: 0;
+	}
+
+	.book-details {
+		margin-top: 3%;
+		padding: 0;
+	}
+
+	.details-card {
+		background: #ecf0f1;
+	}
+
+	.card-content {
+		background: #ffffff;
+		border: 4px;
+		box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+	}
+
+	.card-img {
+		position: relative;
+		overflow: hidden;
+		border-radius: 0;
+		z-index: 1;
+	}
+
+	.col-md-4 {
+		margin-bottom: 5%;
+	}
+
+	.card-img .image {
+		width: 100%;
+		height: auto;
+		display: block;
+		object-fit: none; /* Do not scale the image */
+		object-position: center; /* Center the image within the element */
+		width: 100%;
+		max-height: 250px;
+		margin-bottom: 1rem;
+	}
+
+	.card-img .span {
+		position: absolute;
+		top: 15%;
+		left: 12%;
+		background: #1ABC9C;
+		padding: 6px;
+		color: #fff;
+		font-size: 12px;
+		border-radius: 4px;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-ms-border-radius: 4px;
+		-o-border-radius: 4px;
+		transform: translate(-50%,-50%);
+	}
+
+		.card-img .span .h4 {
+			font-size: 12px;
+			margin: 0;
+			padding: 10px 5px;
+			line-height: 0;
+		}
+
+	.card-desc {
+		padding: 1.25rem;
+	}
+
+		.card-desc .h3 {
+			color: #000000;
+			font-weight: 600;
+			font-size: 1.7em;
+			line-height: 1.3em;
+			margin-top: 0;
+			margin-bottom: 5px;
+			padding: 0;
+		}
+
+		.card-desc .p {
+			color: #747373;
+			font-size: 14px;
+			font-weight: 400;
+			font-size: 1.3em;
+			line-height: 1.5;
+			margin: 0px;
+			margin-bottom: 0px;
+			padding: 0;
+			font-family: 'Raleway', sans-serif;
+		}
+
+	.btn-card {
+		background-color: #1ABC9C;
+		color: #fff;
+		box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+		padding: .84rem 2.14rem;
+		font-size: 1.7rem;
+		-webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+		transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+		-o-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+		margin: 0;
+		border: 0;
+		-webkit-border-radius: .125rem;
+		border-radius: .125rem;
+		cursor: pointer;
+		text-transform: uppercase;
+		white-space: normal;
+		word-wrap: break-word;
+		color: #fff;
+	}
+
+		.btn-card:hover {
+			background: orange;
+		}
+
+	a.btn-card {
+		text-decoration: none;
+		color: #fff;
+	}
+</style>

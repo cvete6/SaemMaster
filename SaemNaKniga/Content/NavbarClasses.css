@@ -1,0 +1,44 @@
+﻿.navbar-positionize {
+    padding-left: 35px !important;
+}
+
+.navbar-positionizeLogin {
+    padding-left: 10px;
+}
+
+.navbar-custom {
+    background-image: url("../navbarImg.jpg");
+    height: 50px;
+}
+
+.navbar-title {
+    float: left;
+    padding: 15px 15px 15px 20px;
+    font-size: 24px;
+    line-height: 20px;
+    color: black;
+}
+
+.navbar-title:hover,
+.navbar-title:focus {
+    text-decoration: none;
+    color: indigo;
+}
+
+@media (min-width: 768px) {
+    .navbar > .container .navbar-title {
+        margin-left: -15px;
+    }
+}
+
+.navbar-options {
+    padding: 15px 10px;
+    font-size: 22px;
+    line-height: 20px;
+    color: midnightblue;
+    font-family: Calibri;
+}
+
+.adjfooter {
+padding:15px;
+}

@@ -1,0 +1,38 @@
+﻿img {
+    width: 140px;
+    height: 120px;
+    padding-left: 25px;
+}
+
+.item img {
+
+width:1200px;
+height:400px;
+
+}
+
+h1 {
+float:left;
+padding-top: 35px;
+margin-bottom:0px;
+}
+
+h5 {
+    clear: both;
+    display: block;
+}
+
+.mySlides {
+
+    width: 550px;
+    display: inline-block;
+    padding-left: 60px;
+    margin-left: 100px;
+    float:left;
+    margin-top:100px;
+}
+
+
+body {
+font-family:'Trebuchet MS', Helvetica, Arial, sans-serif;
+}

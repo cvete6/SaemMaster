@@ -1,0 +1,238 @@
+﻿@model SaemNaKniga.Models.Publish_House_Models.PublishHouseIncreaseBooks
+@using SaemNaKniga.Models
+@using SaemNaKniga.Models.Publish_House_Models
+
+@{
+    ViewBag.Title = "IncreaseBooks";
+}
+
+@{
+    List<SelectListItem> list = new List<SelectListItem>();
+    foreach (Book book1 in Model.books)
+    {
+        list.Add(new SelectListItem() { Text = book1.Name, Value = book1.Id.ToString() });
+    }
+}
+
+<h2>Зголеми број на книги</h2>
+
+<section>
+    <div style="width:40%; float:left;">
+        <div class="">
+            <div class="card-content">
+                <div class="card-img">
+                    <img class="image" src="@Model.publishHouse.ImgUrl" />
+                </div>
+                <div class="card-desc">
+                    <h3 class="h3">@Model.publishHouse.Name</h3>
+                    <p class="p">@Model.publishHouse.Description</p>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-content" style="width:55%; margin-left:3%; float:left">
+        <div style="width: 50%; float:left;">
+            @{ Book book = Model.books.ElementAt(0);}
+            <div class="Books" id="bookNum0">
+                <img class="image img-fluid" style="width: 90%" src="@book.ImgUrl" />
+                <div class="card-desc">
+                    <h2 class="h3">@book.Name</h2>
+                    <h3 class="h3">Година: @book.Year</h3>
+                </div>
+            </div>
+            @for (int i = 1; i < Model.books.Count; i++)
+            {
+                Book bookMore = Model.books.ElementAt(i);
+                <div style="display:none" class="Books" id="bookNum@(i)">
+                    <img class="image img-fluid" style="width: 90%" src="@bookMore.ImgUrl" />
+                    <div class="card-desc">
+                        <h2 class="h3">@bookMore.Name</h2>
+                        <h3 class="h3">Година: @bookMore.Year</h3>
+                    </div>
+                </div>
+            }
+        </div>
+        <div style="width: 48%; float:left; margin-left:1%;">
+            @using (Html.BeginForm())
+            {
+                <div class="form-group">
+                    <div>@Html.LabelFor(m => m.BookId, new { @class = "h3" })</div>
+                    <div>@Html.DropDownListFor(m => m.BookId, list, new { @class = "form-control", @id = "DDL" })</div>
+                    <div>@Html.ValidationMessageFor(m => m.BookId)</div>
+                </div>
+
+                <div class="form-group">
+                    <div>@Html.LabelFor(m => m.Units)</div>
+                    <div>@Html.TextBoxFor(m => m.Units, new { @class = "form-control", @type = "number" })</div>
+                    <div>@Html.ValidationMessageFor(m => m.Units)</div>
+                </div>
+
+                <div class="form-group" style="display:none">
+                    <div>@Html.LabelFor(m => m.PublishHouseId)</div>
+                    <div>@Html.TextBoxFor(m => m.PublishHouseId, new { @class = "form-control", @type = "number" })</div>
+                    <div>@Html.ValidationMessageFor(m => m.PublishHouseId)</div>
+                </div>
+
+                <div class="card-desc">
+                    @{
+                        if (book.Description.Length <= 200)
+                        {
+                            <p id="paragraphNum0" class="p">@book.Description</p>
+                        }
+                        else
+                        {
+                            <p id="paragraphNum0" class="p">@book.Description.Substring(0, 200)...</p>
+                        }
+                    }
+                </div>
+                for(int i = 1; i < Model.books.Count; i++)
+                {
+                    if (Model.books.ElementAt(i).Description.Length<=200)
+                    {
+                        <p id="paragraphNum@(i)" class="p" style="display:none">@Model.books.ElementAt(i).Description</p>
+                    }
+                    else
+                    {
+                        <p id="paragraphNum@(i)" class="p" style="display:none">@Model.books.ElementAt(i).Description.Substring(0, 200)..</p>
+                    }
+                }
+
+                <input class="btn-card" type="submit" value="Зголеми број на книги" />
+            }
+        </div>
+    </div>
+</section>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var selected = 0;
+        $("#DDL").change(function () {
+            console.log(selected);
+            $("#bookNum" + selected).css("display", "none");
+            $("#paragraphNum" + selected).css("display", "none");
+            selected = ($("#DDL").prop("selectedIndex"));
+            $("#bookNum" + selected).css("display", "block");
+            $("#paragraphNum" + selected).css("display", "block");
+        });
+    })
+</script>
+
+<style>
+    @@import url('https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Roboto+Condensed:400,400i,700,700i');
+section{
+    padding: 30px 0;
+}
+.details-card {
+	background: #ecf0f1;
+}
+
+.card-content {
+	background: #ffffff;
+	border: 4px;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+}
+
+.card-img {
+	position: relative;
+	overflow: hidden;
+	border-radius: 0;
+	z-index: 1;
+}
+
+.col-md-4{
+    margin-bottom:5%;
+}
+
+.card-img .image {
+	width: 100%;
+	height: auto;
+	display: block;
+    object-fit: none; /* Do not scale the image */
+    object-position: center; /* Center the image within the element */
+    width: 100%;
+    max-height: 250px;
+    margin-bottom: 1rem;
+}
+
+.card-img .span {
+	position: absolute;
+    top: 15%;
+    left: 12%;
+    background: #1ABC9C;
+    padding: 6px;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    transform: translate(-50%,-50%);
+}
+.card-img .span .h4{
+        font-size: 12px;
+        margin:0;
+        padding:10px 5px;
+         line-height: 0;
+}
+.card-desc {
+	padding: 1.25rem;
+}
+
+.card-desc .h3 {
+	color: #000000;
+    font-weight: 600;
+    font-size: 1.7em;
+    line-height: 1.3em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    padding: 0;
+}
+
+.card-desc .p {
+	color: #747373;
+    font-size: 14px;
+	font-weight: 400;
+	font-size: 1.3em;
+	line-height: 1.5;
+	margin: 0px;
+	margin-bottom: 0px;
+	padding: 0;
+	font-family: 'Raleway', sans-serif;
+}
+.btn-card{
+	background-color: #1ABC9C;
+	color: #fff;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    padding: .84rem 2.14rem;
+    font-size: 1.7rem;
+    -webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    -o-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    margin: 0;
+    border: 0;
+    -webkit-border-radius: .125rem;
+    border-radius: .125rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: normal;
+    word-wrap: break-word;
+    color: #fff;
+}
+.btn-card:hover {
+    background: orange;
+}
+a.btn-card {
+    text-decoration: none;
+    color: #fff;
+}
+</style>
